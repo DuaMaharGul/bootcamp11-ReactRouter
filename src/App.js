@@ -1,23 +1,43 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Home from "./Home";
+import About from "./About";
+import { Routes , Route, Link, useNavigate } from 'react-router-dom';
+import Product from './Product';
+import ProductDetails from './ProductDetails';
+import ProductHome from './ProductHome';
+
+function NotFound() {
+  return <div>Path Not Found</div>
+}
 
 function App() {
+  const navigate = useNavigate();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Welcome</h1>
+      <div>
+        <Link to="/">Home</Link> {' '}
+        <Link to="about">About</Link> {' '}
+        <Link to="products">Product</Link> {' '}
+        <Link to="/products/mobile">Mobile</Link> {' '}
+        <Link to="/products/laptop">Laptop</Link>
+        <button onClick={ ()=>{
+          navigate('/about');
+        }}>
+          Display About Page
+        </button>
+      </div>
+      <Routes>
+          <Route path="/" element={<Home/>}></Route>
+          <Route path="about" element={<About/>}></Route>
+          <Route path="products" element={<Product/>}>
+            <Route path=":productId" element={<ProductDetails/>}></Route>
+            <Route path=":/" element={<ProductHome/>}></Route>
+          </Route>
+          <Route path="*" element={<NotFound/>}></Route>
+      </Routes>
+      
     </div>
   );
 }
